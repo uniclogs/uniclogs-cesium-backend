@@ -8,11 +8,9 @@ services:
     build:
       additional_contexts:
         root: ../
-        dist: ../src
       args:
         VERSION: 1.1.0
-        API_HOST: 0.0.0.0
-        API_PORT: 9000
+        API_PORT: 7032
       tags:
         - uniclogs/cesium-api:latest
         - uniclogs/cesium-api:1.1.0

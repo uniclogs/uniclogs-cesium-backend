@@ -1,7 +1,7 @@
 [project]
-name = "cesium-api"
-description = "A supporting API for the CesiumJS App"
-version = "1.0.2"
+name = "uniclogs-cesium-backend"
+description = "Backend API for the UniClOGS Cesium Frontend."
+version = "2.0.0"
 
 readme = "README.md"
 requires-python = ">=3.14"
