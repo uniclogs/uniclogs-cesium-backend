@@ -1,0 +1,21 @@
+services:
+  cesium-api:
+    image: cesium-api:latest
+    ports:
+      - '9000:9000'
+    volumes:
+      - globe_data:/var/cesium-api/
+    build:
+      additional_contexts:
+        root: ../
+        dist: ../src
+      args:
+        VERSION: 1.1.0
+        API_HOST: 0.0.0.0
+        API_PORT: 9000
+      tags:
+        - uniclogs/cesium-api:latest
+        - uniclogs/cesium-api:1.1.0
+
+volumes:
+  globe_data:

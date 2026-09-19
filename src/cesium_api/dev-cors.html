@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API CZML CORs</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        function loadImg(zoom, x, y) {
+            let url = `http://localhost:9000/tiles/${zoom}/${x}/${y}.png`;
+            let e = document.createElement('img');
+            e.setAttribute('src', url);
+            let content = document.getElementById('content');
+            content.appendChild(e);
+        }
+
+        function loadCZML() {
+            let url = 'http://localhost:9000/czml';
+
+            fetch(url).then(async function(res) {
+                console.log(res);
+                let e = document.getElementById('content');
+                e.textContent = JSON.stringify(await res.json())
+            });
+        }
+    </script>
+    <h1>CZML</h1>
+    <button onclick="loadCZML()">Load CZML</button>
+    <button onclick="loadImg(0, 0, 0)">Load Image</button>
+    <div id="content">
+    </div>
+</body>
+
+</html>
