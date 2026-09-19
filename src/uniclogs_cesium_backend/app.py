@@ -1,10 +1,14 @@
 from __future__ import annotations
 
-from flask import Flask
+from os import getenv
 
-from . import DEFAULT_DATA_DIR
+from flask import Flask
+from flask_cors import CORS
+
 from .data import Data
 from .views import view_czml, view_groundstation, view_passes, view_satellite, view_tiles
+
+DEFAULT_DATA_DIR = getenv("DATA_DIR", "../data")
 
 
 class App(Flask):
@@ -16,9 +20,9 @@ class App(Flask):
     def __init__(
         self: App,
         data: Data,
-        host: str = 'localhost',
+        host: str = "localhost",
         port: int = 9000,
-        api_prefix: str = '/',
+        api_prefix: str = "/",
         data_dir: str = DEFAULT_DATA_DIR,
         debug: bool = False,
     ):
@@ -40,3 +44,11 @@ class App(Flask):
 
     def run(self: App):
         super().run(host=self.host, port=self.port, debug=self.debug)
+
+
+uniclogs_cesium_backend = App()
+
+CORS.CORS_ORIGINS = [
+    "*"
+]
+CORS(uniclogs_cesium_backend)
