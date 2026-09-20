@@ -14,21 +14,23 @@ env:
 
 jobs:
   code_checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
       - name: Set-Up Python v${{ env.PYTHON_VERSION}}
         uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION}}
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install .[ci]
 
       - name: Check Formatting
         run: ruff check
-      
+
       - name: Check Linting
         run: ruff format --check
 
