@@ -16,9 +16,9 @@ class App(Flask):
     def __init__(
         self: App,
         data: Data,
-        host: str = 'localhost',
+        host: str = "localhost",
         port: int = 9000,
-        api_prefix: str = '/',
+        api_prefix: str = "/",
         data_dir: str = DEFAULT_DATA_DIR,
         debug: bool = False,
     ):

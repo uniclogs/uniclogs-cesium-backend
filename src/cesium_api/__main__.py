@@ -84,9 +84,7 @@ def main():
         print(f"{APP_NAME} v{APP_VERSION}: {APP_DESCRIPTION}")
         return
 
-    api_prefix = (
-        args.api_prefix[:-1] if args.api_prefix.endswith("/") else args.api_prefix
-    )
+    api_prefix = args.api_prefix[:-1] if args.api_prefix.endswith("/") else args.api_prefix
 
     app = App(
         data=Data(SATELLITES, GROUND_STATIONS),

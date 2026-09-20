@@ -1,6 +1,6 @@
 [project]
-name = "cesium-api"
-description = "A supporting API for the CesiumJS App"
+name = "uniclogs-cesium-backend"
+description = "Backend API for the UniClOGS Cesium Frontend."
 version = "1.0.2"
 
 readme = "README.md"
@@ -31,6 +31,9 @@ dependencies = [
 ci = ["ruff==0.16.5", "pytest==9.1.1"]
 docker = ["fastapi[standard]==0.141.1"]
 
+
+[tool.pytest]
+testpaths = ["./tests"]
 
 [tool.ruff]
 line-length = 100

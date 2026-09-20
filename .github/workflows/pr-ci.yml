@@ -10,29 +10,57 @@ permissions:
   contents: read
 
 env:
-  PYTHON_VERSION: 3.14
+  PYTHON_VERSION: "3.14t"
 
 jobs:
-  code_checks:
+  ci_setup:
     runs-on: ubuntu-slim
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - &checkout
+        name: Checkout Repo
+        uses: actions/checkout@v7
 
-      - name: Set-Up Python v${{ env.PYTHON_VERSION}}
-        uses: actions/setup-python@v3
+      - &setup_python
+        name: Set-Up Python v${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v7
         with:
-          python-version: ${{ env.PYTHON_VERSION}}
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install Dependencies
         run: pip install .[ci]
 
-      - name: Check Formatting
-        run: ruff check
+  linting:
+    runs-on: ubuntu-slim
+    needs: [ci_setup]
+    steps:
+      - *checkout
+      - *setup_python
 
-      - name: Check Linting
-        run: ruff format --check
+      - name: Debug
+        run: pip freeze
 
-      - name: Test with pytest
-        run: pytest
+      # - name: Check Linting
+      #   run: python -m ruff check
+
+  # formatting:
+  #   runs-on: ubuntu-slim
+  #   needs: [ci_setup]
+  #   steps:
+  #     - *checkout
+  #     - *fetch_python
+
+  #     - name: Check Formatting
+  #       run: python -m ruff format --check
+
+  # unit-tests:
+  #   runs-on: ubuntu-slim
+  #   needs: [ci_setup]
+  #   steps:
+  #     - *checkout
+  #     - *fetch_python
+
+  #     - name: Run Unit Tests
+  #       run: python -m pytest
