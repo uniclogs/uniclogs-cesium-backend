@@ -1,28 +1,25 @@
-FROM python:slim
+FROM python:latest
 
 ARG VERSION
 
-ARG API_HOST
+ARG API_HOST="127.0.0.1"
 ENV API_HOST=${API_HOST}
 
-ARG API_PORT
+ARG API_PORT=7032
 ENV API_PORT=${API_PORT}
-
-ARG APP_DIR="/app"
-ENV APP_DIR=${APP_DIR}
 
 ARG DATA_DIR="/var/cesium-api/"
 ENV DATA_DIR=${DATA_DIR}
 
-ARG API_PREFIX="/"
-ENV API_PREFIX=${API_PREFIX}
+ENV TMP_DIR="/tmp"
+ENV WHEEL_NAME="uniclogs_cesium_backend-${VERSION}-py3-none-any.whl"
+ENV WHEEL_PATH="${TMP_DIR}/${WHEEL_NAME}"
 
-
-RUN mkdir -p ${APP_DIR}
-
-COPY --from=root pyproject.toml ${APP_DIR}
-COPY --from=dist cesium_api ${APP_DIR}
+COPY --from=dist ${WHEEL_NAME} ${WHEEL_PATH}
+RUN pip install -U ${WHEEL_PATH}
+RUN pip install gunicorn==26.2.0
+RUN rm -rf ${WHEEL_PATH}
 
 EXPOSE ${API_PORT}
 
-ENTRYPOINT cesium-api --host ${API_HOST} --port ${API_PORT} --data-dir ${DATA_DIR} --prefix ${API_PREFIX}
+ENTRYPOINT gunicorn uniclogs_cesium_backend --bind ${API_HOST}:${API_PORT}

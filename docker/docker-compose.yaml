@@ -1,21 +1,22 @@
 services:
   cesium-api:
-    image: cesium-api:latest
-    ports:
-      - '9000:9000'
-    volumes:
-      - globe_data:/var/cesium-api/
     build:
       additional_contexts:
-        root: ../
-        dist: ../src
+        dist: ../dist
       args:
-        VERSION: 1.1.0
-        API_HOST: 0.0.0.0
-        API_PORT: 9000
+        VERSION: RE_VERSION
       tags:
-        - uniclogs/cesium-api:latest
-        - uniclogs/cesium-api:1.1.0
+        - oresat/cesium-backend:latest
+        - oresat/cesium-backend:RE_VERSION
+
+    image: oresat/cesium-backend:latest
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 6008
+    ports:
+      - 6008:6008
+    volumes:
+      - globe_data:/var/cesium-api/
 
 volumes:
   globe_data:

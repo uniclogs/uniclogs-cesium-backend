@@ -1,10 +1,26 @@
 from __future__ import annotations
 
-from flask import Flask
+from os import getenv
 
-from . import DEFAULT_DATA_DIR
-from .data import Data
+from flask import Flask
+from flask_cors import CORS
+
+from .data import Data, GroundStation, Satellite
 from .views import view_czml, view_groundstation, view_passes, view_satellite, view_tiles
+
+DEFAULT_HOST = "0.0.0.0"
+DEFAULT_PORT = 9000
+DEFAULT_API_PREFIX = "/"
+DEFAULT_DATA_DIR = getenv("DATA_DIR", "../data")
+
+SATELLITES = [
+    # Satellite('OreSat0', 52017, '2022-026'),
+    Satellite("OreSat0.5", 60525, "2024-149"),
+]
+
+GROUND_STATIONS = [
+    GroundStation("UniClOGS EB", 45.509054, -122.681394, 50, 0),
+]
 
 
 class App(Flask):
@@ -16,18 +32,12 @@ class App(Flask):
     def __init__(
         self: App,
         data: Data,
-        host: str = 'localhost',
-        port: int = 9000,
-        api_prefix: str = '/',
-        data_dir: str = DEFAULT_DATA_DIR,
+        api_prefix: str = DEFAULT_API_PREFIX,
         debug: bool = False,
     ):
         super().__init__(__name__)
 
         # Setup app parameters
-        self.host = host
-        self.port = port
-        self.data_dir = data_dir
         self.data = data
         self.debug = debug
 
@@ -38,5 +48,19 @@ class App(Flask):
         self.register_blueprint(view_satellite, url_prefix=f"{api_prefix}/sat")
         self.register_blueprint(view_tiles, url_prefix=f"{api_prefix}/tiles")
 
-    def run(self: App):
-        super().run(host=self.host, port=self.port, debug=self.debug)
+
+def build_app(*args) -> App:
+    app = App(
+        data=Data(
+            satellites=SATELLITES,
+            groundstations=GROUND_STATIONS,
+        )
+    )
+
+    ALLOWED_ORIGINS: list[str] = [
+        "http://127.0.0.1:3000",
+        "http://:localhost:3000",
+        "https://cesium.uniclogs.org",
+    ]
+    CORS(app=app, origins=ALLOWED_ORIGINS)
+    return app
