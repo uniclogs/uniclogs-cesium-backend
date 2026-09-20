@@ -17,6 +17,7 @@ ENV WHEEL_PATH="${TMP_DIR}/${WHEEL_NAME}"
 
 COPY --from=dist ${WHEEL_NAME} ${WHEEL_PATH}
 RUN pip install -U ${WHEEL_PATH}
+RUN pip install gunicorn==26.2.0
 RUN rm -rf ${WHEEL_PATH}
 
 EXPOSE ${API_PORT}

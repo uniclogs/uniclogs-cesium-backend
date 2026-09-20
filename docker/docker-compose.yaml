@@ -6,12 +6,15 @@ services:
       args:
         VERSION: RE_VERSION
       tags:
-        - uniclogs/cesium-backend:latest
-        - uniclogs/cesium-backend:RE_VERSION
+        - oresat/cesium-backend:latest
+        - oresat/cesium-backend:RE_VERSION
 
-    image: cesium-backend:RE_VERSION
+    image: oresat/cesium-backend:latest
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 6008
     ports:
-      - '9000:9000'
+      - 6008:6008
     volumes:
       - globe_data:/var/cesium-api/
 
