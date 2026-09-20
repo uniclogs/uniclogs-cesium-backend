@@ -1,0 +1,36 @@
+name: Pull Request CI Actions
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: 3.14
+
+jobs:
+  code_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set-Up Python v${{ env.PYTHON_VERSION}}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ env.PYTHON_VERSION}}
+
+      - name: Install dependencies
+        run: pip install .[ci]
+
+      - name: Check Formatting
+        run: ruff check
+      
+      - name: Check Linting
+        run: ruff format --check
+
+      - name: Test with pytest
+        run: pytest
