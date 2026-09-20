@@ -5,7 +5,6 @@ view_passes = Blueprint("view_passes", __name__)
 
 @view_passes.route("/<groundstation>/<satellite>")
 def get_passes_by_gs_sat(groundstation: str, satellite: str):
-    passes = {}
     data = current_app.data
 
     gs_passes = data.passes.get(groundstation)

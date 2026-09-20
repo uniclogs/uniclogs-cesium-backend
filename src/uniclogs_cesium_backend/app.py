@@ -49,7 +49,7 @@ class App(Flask):
         self.register_blueprint(view_tiles, url_prefix=f"{api_prefix}/tiles")
 
 
-def create(*args) -> App:
+def build_app(*args) -> App:
     app = App(
         data=Data(
             satellites=SATELLITES,
