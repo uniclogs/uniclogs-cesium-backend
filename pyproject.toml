@@ -29,7 +29,7 @@ dependencies = [
 
 [project.optional-dependencies]
 ci = ["ruff==0.16.5", "pytest==9.1.1"]
-docker = ["fastapi[standard]==0.141.1"]
+docker = ["gunicorn==26.2.0"]
 
 
 [tool.ruff]

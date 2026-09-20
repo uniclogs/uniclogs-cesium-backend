@@ -48,20 +48,19 @@ class App(Flask):
         self.register_blueprint(view_satellite, url_prefix=f"{api_prefix}/sat")
         self.register_blueprint(view_tiles, url_prefix=f"{api_prefix}/tiles")
 
-    def run(self: App):
-        super().run(host=self.host, port=self.port, debug=self.debug)
 
-
-uniclogs_cesium_backend = App(
-    data=Data(
-        satellites=SATELLITES,
-        groundstations=GROUND_STATIONS,
+def create(*args) -> App:
+    app = App(
+        data=Data(
+            satellites=SATELLITES,
+            groundstations=GROUND_STATIONS,
+        )
     )
-)
 
-ALLOWED_ORIGINS: list[str] = [
-    "http://127.0.0.1:3000",
-    "http://:localhost:3000",
-    "https://cesium.uniclogs.org",
-]
-CORS(app=uniclogs_cesium_backend, origins=ALLOWED_ORIGINS)
+    ALLOWED_ORIGINS: list[str] = [
+        "http://127.0.0.1:3000",
+        "http://:localhost:3000",
+        "https://cesium.uniclogs.org",
+    ]
+    CORS(app=app, origins=ALLOWED_ORIGINS)
+    return app

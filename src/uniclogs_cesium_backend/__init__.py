@@ -1,6 +1,8 @@
 from importlib.metadata import metadata
 
-from .app import GROUND_STATIONS, SATELLITES, uniclogs_cesium_backend
+from uniclogs_cesium_backend.app import App
+
+from .app import GROUND_STATIONS, SATELLITES, create
 
 __metadata__ = metadata(__name__)
 
@@ -8,4 +10,6 @@ APP_NAME: str = __metadata__["name"]
 APP_DESCRIPTION: str = __metadata__["description"]
 APP_VERSION: str = __metadata__["version"]
 
-__all__ = ["uniclogs_cesium_backend", "SATELLITES", "GROUND_STATIONS"]
+application: App = create()
+
+__all__ = ["application", "SATELLITES", "GROUND_STATIONS"]
